@@ -1,20 +1,23 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import {GetIds} from './services/IdService'
 import './App.css'
-
+import { QueryConverter } from './utils/QueryConverter'
 function App() {
   const [count, setCount] = useState(0)
-
+  useState(() => {
+    
+    const records=10;
+    const length=10;
+    const has_letters=true;
+    const values = { records, length, has_letters };
+    const query = QueryConverter(values);
+    GetIds(query).then((data) => {
+      console.log(data)
+    });
+  });
   return (
     <>
       <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
       </div>
       <h1>Vite + React</h1>
       <div className="card">
