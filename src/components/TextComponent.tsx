@@ -1,90 +1,57 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { GetIds } from '../services/IdService.ts';
-import { GetEmails } from '../services/EmailService.ts';
-import { GetCities } from '../services/CityService.ts';
-import DocumentFormat from './DocumentFormat.tsx';
-import { QueryConverter } from '../utils/QueryConverter.ts';
+// TextComponent.tsx
+import React, { useEffect, useState, useMemo } from 'react';
+import DocumentFormat from './DocumentFormat';
 import * as js2xmlparser from 'js2xmlparser';
 import '../css/TextComponent.css';
+import { TextComponentProps } from '../models/TextComponentProps';
 
-function TextComponent() {
-  const [allData, setAllData] = useState([]);
-  const [format, setFormat] = useState('sql'); // State for selected format
-  const hasFetched = useRef(false);
-  const displayedData = allData.slice(0, 1000);
-  const sql = displayedData
-  .map((item) => `INSERT INTO {table}({tablas}) VALUES (${item.id}, '${item.email}', '${item.city}')`)
-  .join('\n');
-  const json = JSON.stringify(displayedData, null, 2);
-  const xml = js2xmlparser.parse("tabla", displayedData);
-  const csv = displayedData.map((item) => `${item.id},${item.email},${item.city}`).join('\n');
-  const [selected, setSelected] = React.useState("sql");
-
-  // SQL, JSON, and XML representations
+const TextComponent: React.FC<TextComponentProps> = ({ allData = [], tableName }) => {
+  const [format, setFormat] = useState('sql');
+  const [displayedData, setDisplayedData] = useState(allData.slice(0, 1000));
 
   useEffect(() => {
-    if (hasFetched.current) return;
-    hasFetched.current = true;
+    setDisplayedData(allData.slice(0, 1000)); // When allData changes, update displayedData
+  }, [allData]);
 
-    const fetchData = async () => {
-      const records = 100000;
-      const length = 6; 
-      const has_letters = false;
-      const values = { records, length, has_letters };
-      const values2 = { records };
+  const sql = useMemo(() =>
+    displayedData
+      .map((item) => `INSERT INTO ${tableName} (id, email, city) VALUES (${item.id}, '${item.email}', '${item.city}')`)
+      .join('\n'),
+    [displayedData, tableName] // Recompute SQL when either displayedData or tableName changes
+  );
 
-      const query = QueryConverter(values);
-      const query2 = QueryConverter(values2);
-      const query3 = QueryConverter(values2);
+  const json = useMemo(() => JSON.stringify(displayedData, null, 2), [displayedData]);
 
-      // Execute both queries in parallel
-      const [data, data2, data3] = await Promise.all([
-        GetIds(query),
-        GetEmails(query2),
-        GetCities(query3),
-      ]);
-      // Efficiently merge data using a loop
-      const merged = data.map((item, index) => ({
-        ...item,
-        email: data2[index]?.email || 'No email found',
-        city: data3[index]?.city || 'No city found',
-      }));
-       
-      setAllData(merged);
-    };
+  const xml = useMemo(() => js2xmlparser.parse(`${tableName}`, displayedData), [displayedData]);
 
-    fetchData();
-  }, []);
+  const csv = useMemo(() =>
+    displayedData.map((item) => `${item.id},${item.email},${item.city}`).join('\n'),
+    [displayedData]
+  );
 
-  // Update format when the user selects a different option
-    const handleChange = (format:string) => {
-        setFormat(format);
-    };
-
-  // Create a mapping of formats to the corresponding data
-  const formatDelegates = {
+  const formatDelegates = useMemo(() => ({
     sql: () => sql,
     json: () => json,
     xml: () => xml,
     csv: () => csv,
-  };
+  }), [sql, json, xml, csv]);
 
-  // Get the content based on the selected format
   const content = formatDelegates[format]();
 
+  const handleChange = (format: string) => {
+    setFormat(format);
+  };
+
   return (
-    
     <section className="text-component">
-      <DocumentFormat handleChange={handleChange} allData={allData} />     
+      <DocumentFormat handleChange={handleChange} allData={allData} />
       <textarea
         className="text-area"
         value={content}
         readOnly
       />
-            
     </section>
-
   );
-}
+};
 
 export default TextComponent;
