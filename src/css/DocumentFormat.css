@@ -1,0 +1,79 @@
+.draggable-container {
+    animation: slideInFromRight 1s;
+    z-index: 9999;
+    position: absolute;
+    top: 10px;
+    right: 0;
+}
+
+.floating-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    border-radius: 31px;
+    background-color: rgba(0, 0, 0, 0.479);
+    position: relative;
+}
+
+.flap {
+    background-color: rgba(0, 0, 0, 0.479);
+    position: absolute;
+    width: 90px;
+    height: 15px;
+    right: 90px;
+    top: 117px;
+    border-radius: 0 0 50px 50px ;
+    cursor: grab;
+}
+
+.format-buttons {
+    overflow: hidden;
+    display: flex;
+    position: relative;
+    width: 100%;
+}
+
+.floating-container .format-button {
+    cursor: pointer;
+    border: none;
+    width: 25%;
+    height: 45%;
+    padding: 20px;
+    background-color: transparent;
+    color: white;
+    font-weight: bold;
+    border-radius: 50px;
+    z-index: 3;
+}
+
+.download-button {
+    cursor: pointer;
+    border: none;
+    padding: 15px;
+    width: 90%;
+    margin: 5px 0 10px 0;
+    color: white;
+    font-weight: bold;
+    border-radius: 50px;
+}
+
+.floating-container .indicator {
+    position: absolute;
+    height: 100%;
+    width: 25%;
+    background-color: rgba(17, 226, 122, 0.479);
+    border-radius: 50px;
+    transition: transform 0.5s ease-in-out;
+    z-index: 2;
+}
+
+@keyframes slideInFromRight {
+    0% {
+        transform: translateX(100%);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}

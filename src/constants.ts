@@ -1,1 +1,1 @@
-export const API_URL = 'https://localhost:7040/api';
+export const API_URL = 'https://sqldatageneratorapi.azurewebsites.net/api';

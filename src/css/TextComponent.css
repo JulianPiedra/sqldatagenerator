@@ -1,0 +1,13 @@
+.text-component {
+    width: 100%;
+}
+
+.text-component .text-area {
+    resize: none;
+    width: 99%;
+    height: 98%;
+    overflow: auto; 
+    scrollbar-width: none; /* For Firefox to hide the scrollbar */
+    -ms-overflow-style: none; /* For IE/Edge to hide the scrollbar */
+    z-index: 1;
+}
