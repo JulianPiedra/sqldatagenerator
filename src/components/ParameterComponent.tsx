@@ -8,7 +8,7 @@ import { QueryConverter } from "../utils/QueryConverter";
 import "../css/ParameterComponent.css";
 
 const ParameterComponent: React.FC = () => {
-  const [state, updateState] = useGlobalState(); // Obtiene el estado global y su actualizador
+  const [, updateState] = useGlobalState(); // Obtiene el estado global y su actualizador
 
   const handleRecordsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const records = Number(event.target.value);
@@ -30,7 +30,7 @@ const ParameterComponent: React.FC = () => {
       GetCities(query),
     ]);
 
-    const mergedData = ids.map((id: number, index: number) => ({
+    const mergedData = ids.map(( index: number) => ({
       id: ids[index]?.id || "No id found",
       email: emails[index]?.email || "No email found",
       city: cities[index]?.city || "No city found",
@@ -41,7 +41,7 @@ const ParameterComponent: React.FC = () => {
 
   return (
     <section className="parameter-component">
-      <div className="parameters">
+      <div className="">
         <label htmlFor="records">Records to generate:
           <input
             type="number"
