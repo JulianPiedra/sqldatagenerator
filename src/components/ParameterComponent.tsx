@@ -1,70 +1,64 @@
 // ParameterComponent.tsx
-import React, { useState, useEffect } from 'react';
-import { GetIds } from '../services/IdService.ts';
-import { GetEmails } from '../services/EmailService.ts';
-import { GetCities } from '../services/CityService.ts';
-import { QueryConverter } from '../utils/QueryConverter.ts';
-import { TextComponentProps } from '../models/TextComponentProps';
-import '../css/ParameterComponent.css';
+import React from "react";
+import { useGlobalState } from "../useGlobalState";
+import { GetIds } from "../services/IdService";
+import { GetEmails } from "../services/EmailService";
+import { GetCities } from "../services/CityService";
+import { QueryConverter } from "../utils/QueryConverter";
+import "../css/ParameterComponent.css";
 
-const ParameterComponent: React.FC<TextComponentProps> = ({ setAllData, setTableName }) => {
-  const [records, setRecords] = useState(0); // Inicializado en 0
+const ParameterComponent: React.FC = () => {
+  const [state, updateState] = useGlobalState(); // Obtiene el estado global y su actualizador
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Number(event.target.value);
-    if (value <= 0) return; // Validamos que el valor sea mayor o igual a 0
-    setRecords((_prevRecords) => {
-      const updatedValue = value; // Usamos el valor del evento actual
-      fetchData(updatedValue); // Pasamos el nuevo valor a la función de fetch
-      return updatedValue;
-    });
+  const handleRecordsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const records = Number(event.target.value);
+    if (records > 0) fetchData(records); // Valida y llama a la función de fetch
   };
 
   const handleTableNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (setTableName) {
-      setTableName(event.target.value); // Update table name when input changes
-    }
+    const inputValue = event.target.value.trim(); // Elimina espacios en blanco innecesarios
+
+    updateState({ tableName: inputValue }); // Actualiza el estado global
   };
 
-  const fetchData = async (updatedRecords: number = records) => { // Usamos el valor actualizado
-    const length = 6;
-    const has_letters = false;
-    const values = { records: updatedRecords, length, has_letters };
-    const values2 = { records: updatedRecords };
 
-    const query = QueryConverter(values);
-    const query2 = QueryConverter(values2);
-    const query3 = QueryConverter(values2);
-
-    const [data, data2, data3] = await Promise.all([
+  const fetchData = async (records: number) => {
+    const query = QueryConverter({ records, length: 4, has_letters: true });
+    const [ids, emails, cities] = await Promise.all([
       GetIds(query),
-      GetEmails(query2),
-      GetCities(query3),
+      GetEmails(query),
+      GetCities(query),
     ]);
 
-    const merged = data.map((item: Number, index: string) => ({
-      ...item,
-      email: data2[index]?.email || 'No email found',
-      city: data3[index]?.city || 'No city found',
+    const mergedData = ids.map((id: number, index: number) => ({
+      id: ids[index]?.id || "No id found",
+      email: emails[index]?.email || "No email found",
+      city: cities[index]?.city || "No city found",
     }));
 
-    if (setAllData) {
-      setAllData(merged);
-    }
+    updateState({ allData: mergedData }); // Actualiza los datos en el estado global
   };
 
   return (
     <section className="parameter-component">
-      <input
-        type="number"
-        placeholder="Records"
-        onChange={handleChange} // Corregimos el evento para usar el nuevo valor
-      />
-      <input
-        type="text"
-        placeholder="Table Name"
-        onChange={handleTableNameChange} // Update table name on change
-      />
+      <div className="parameters">
+        <label htmlFor="records">Records to generate:
+          <input
+            type="number"
+            placeholder="Records"
+            name="records"
+            onChange={handleRecordsChange}
+          />
+        </label>
+        <label htmlFor="tableName">Table Name:
+          <input
+            type="text"
+            placeholder="Table Name"
+            name="tableName"
+            onChange={handleTableNameChange}
+          />
+        </label>
+      </div>
     </section>
   );
 };

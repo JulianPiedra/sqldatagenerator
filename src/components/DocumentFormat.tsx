@@ -1,13 +1,15 @@
 import React, { useState, useMemo } from "react";
 import "../css/DocumentFormat.css";
-import * as js2xmlparser from 'js2xmlparser';
+import { ConvertToFileTypes } from "../utils/ConvertToFileTypes";
+import { useGlobalState } from "../useGlobalState";
 
 interface Props {
   handleChange: (format: string) => void;
-  allData: any[];
 }
 
-const DocumentFormat: React.FC<Props> = ({ handleChange, allData }) => {
+const DocumentFormat: React.FC<Props> = ({ handleChange }) => {
+  const [state] = useGlobalState(); // Obtiene el estado global
+  const { tableName, allData } = state;
   const [selected, setSelected] = useState("sql");
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
@@ -21,25 +23,15 @@ const DocumentFormat: React.FC<Props> = ({ handleChange, allData }) => {
     handleChange(format);
   };
 
-  const handleDownload = (event: React.MouseEvent<HTMLButtonElement>) => {
-    const filename = "data." + selected;
-    const content = {
-      sql: allData
-        .map((item) => `INSERT INTO {table}({tablas}) VALUES (${item.id}, '${item.email}', '${item.city}')`)
-        .join("\n"),
-      json: JSON.stringify(allData, null, 2),
-      xml: js2xmlparser.parse("tabla", allData),
-      csv: allData.map((item) => `${item.id},${item.email},${item.city}`).join("\n"),
-    };
-    const blob = new Blob([content[selected]], { type: "text/plain" });
+  const handleDownload = () => {
+    const content = ConvertToFileTypes(tableName, allData, selected);
+    const blob = new Blob([content], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = filename;
+    link.download = `data.${selected}`;
     link.click();
   };
-
-  const selectedIndex = buttonValues.indexOf(selected);
 
   const handleMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
     setIsDragging(true);
@@ -53,22 +45,23 @@ const DocumentFormat: React.FC<Props> = ({ handleChange, allData }) => {
     setPosition({ x: newX, y: newY });
   };
 
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
+  const handleMouseUp = () => setIsDragging(false);
 
   return (
-    <div className="draggable-container"
+    <div
+      className="draggable-container"
       style={{ transform: `translate(${position.x}px, ${position.y}px)` }}
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
-      onMouseLeave={handleMouseUp}>
-
+      onMouseLeave={handleMouseUp}
+    >
       <div className="floating-container">
+      <div className="flap"></div>
+
         <div className="format-buttons">
-          <div className="indicator"
-            style={{ transform: `translateX(${selectedIndex * 100}%)` }} />
+
+          <div className="indicator" style={{ transform: `translateX(${buttonValues.indexOf(selected) * 100}%)` }} />
           {buttonValues.map((value) => (
             <button
               className="format-button"
@@ -80,9 +73,10 @@ const DocumentFormat: React.FC<Props> = ({ handleChange, allData }) => {
             </button>
           ))}
         </div>
-        <button className="download-button" onClick={handleDownload}>Download</button>
+        <button className="download-button" onClick={handleDownload}>
+          Download
+        </button>
       </div>
-      <div className="flap"></div>
     </div>
   );
 };

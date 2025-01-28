@@ -1,3 +1,4 @@
+import ShowError from "../utils/ShowError";
 
 export const ApiFetch = async (url: string) => {
     const apiKey = import.meta.env.VITE_X_API_KEY;
@@ -22,9 +23,11 @@ export const ApiFetch = async (url: string) => {
         if (response.ok) {
             return await response.json();
         } else {
-            console.error(`Error: ${response.status} ${response.statusText}`);
+            response.json().then((data) => {
+            ShowError(String(data.message));
+            });
         }
     } catch (error) {
-        console.error("Fetch error:", error);
+        ShowError(String(error));
     }
 };

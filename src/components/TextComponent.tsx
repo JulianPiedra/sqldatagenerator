@@ -1,55 +1,28 @@
-// TextComponent.tsx
-import React, { useEffect, useState, useMemo } from 'react';
-import DocumentFormat from './DocumentFormat';
-import * as js2xmlparser from 'js2xmlparser';
-import '../css/TextComponent.css';
-import { TextComponentProps } from '../models/TextComponentProps';
+import React, { useEffect, useState } from "react";
+import DocumentFormat from "./DocumentFormat";
+import { useGlobalState } from "../useGlobalState";
+import "../css/TextComponent.css";
+import { ConvertToFileTypes } from "../utils/ConvertToFileTypes";
 
-const TextComponent: React.FC<TextComponentProps> = ({ allData = [], tableName }) => {
-  const [format, setFormat] = useState('sql');
-  const [displayedData, setDisplayedData] = useState(allData.slice(0, 1000));
-
+const TextComponent: React.FC = () => {
+  const [state] = useGlobalState(); // Obtiene el estado global
+  const {tableName, allData } = state;
+  const [limitedContent, setLimitedContent] = useState("");
+  const [format, setFormat] = useState("sql");
   useEffect(() => {
-    setDisplayedData(allData.slice(0, 1000)); // When allData changes, update displayedData
-  }, [allData]);
-
-  const sql = useMemo(() =>
-    displayedData
-      .map((item) => `INSERT INTO ${tableName} (id, email, city) VALUES (${item.id}, '${item.email}', '${item.city}')`)
-      .join('\n'),
-    [displayedData, tableName] // Recompute SQL when either displayedData or tableName changes
-  );
-
-  const json = useMemo(() => JSON.stringify(displayedData, null, 2), [displayedData]);
-
-  const xml = useMemo(() => js2xmlparser.parse(`${tableName}`, displayedData), [displayedData]);
-
-  const csv = useMemo(() =>
-    displayedData.map((item) => `${item.id},${item.email},${item.city}`).join('\n'),
-    [displayedData]
-  );
-
-  const formatDelegates = useMemo(() => ({
-    sql: () => sql,
-    json: () => json,
-    xml: () => xml,
-    csv: () => csv,
-  }), [sql, json, xml, csv]);
-
-  const content = formatDelegates[format]();
-
-  const handleChange = (format: string) => {
-    setFormat(format);
+    UpdateContent()
+  }, [allData, format, tableName]);
+  const UpdateContent = () => {
+    const fileContent = ConvertToFileTypes(tableName, allData, format);
+    setLimitedContent(fileContent
+      .split("\n") 
+      .slice(0, 1000) 
+      .join("\n")) ;  
   };
-
   return (
     <section className="text-component">
-      <DocumentFormat handleChange={handleChange} allData={allData} />
-      <textarea
-        className="text-area"
-        value={content}
-        readOnly
-      />
+      <DocumentFormat handleChange={setFormat} />
+      <textarea className="text-area" value={limitedContent} readOnly />
     </section>
   );
 };

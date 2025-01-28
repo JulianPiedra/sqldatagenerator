@@ -4,10 +4,15 @@
 
 .text-component .text-area {
     resize: none;
+    line-height: 30px;
+    font-weight: 800;
+    font-size: 15px;
     width: 99%;
     height: 98%;
-    overflow: auto; 
-    scrollbar-width: none; /* For Firefox to hide the scrollbar */
-    -ms-overflow-style: none; /* For IE/Edge to hide the scrollbar */
+    overflow: auto;
+    scrollbar-width: none;
+    /* For Firefox to hide the scrollbar */
+    -ms-overflow-style: none;
+    /* For IE/Edge to hide the scrollbar */
     z-index: 1;
 }
