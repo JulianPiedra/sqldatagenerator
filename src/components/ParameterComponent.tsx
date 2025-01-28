@@ -41,7 +41,7 @@ const ParameterComponent: React.FC = () => {
 
   return (
     <section className="parameter-component">
-      <div className="">
+      <div className="parameters">
         <label htmlFor="records">Records to generate:
           <input
             type="number"
