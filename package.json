@@ -1,7 +1,7 @@
 {
   "name": "sqldatagenerator",
   "private": true,
-  "homepage": "/SqlDataGenerator/",
+  "homepage": "https://julianpiedra.github.io/SqlDataGenerator/",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
