@@ -13,7 +13,7 @@ export const ConvertToFileTypes = (
 
       return `INSERT INTO ${tableName} (id, email, city) VALUES\n` +
         allData
-          .map((item, index) =>
+          .map((item, _index) =>
             `('${item.id}', '${item.email}', '${item.city}')`
           )
           .join(",\n") + ';';
