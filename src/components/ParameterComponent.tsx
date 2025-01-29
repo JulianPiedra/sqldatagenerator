@@ -6,6 +6,7 @@ import { GetEmails } from "../services/EmailService";
 import { GetCities } from "../services/CityService";
 import { QueryConverter } from "../utils/QueryConverter";
 import "../css/ParameterComponent.css";
+import 'remixicon/fonts/remixicon.css';
 
 const ParameterComponent: React.FC = () => {
   const [, updateState] = useGlobalState(); // Obtiene el estado global y su actualizador
@@ -30,7 +31,7 @@ const ParameterComponent: React.FC = () => {
       GetCities(query),
     ]);
 
-    const mergedData = ids.map(( index: number) => ({
+    const mergedData = ids.map((item: string, index: number) => ({
       id: ids[index]?.id || "No id found",
       email: emails[index]?.email || "No email found",
       city: cities[index]?.city || "No city found",
@@ -49,8 +50,10 @@ const ParameterComponent: React.FC = () => {
             name="records"
             onChange={handleRecordsChange}
           />
+
         </label>
-        <label htmlFor="tableName">Table Name:
+        <label htmlFor="tableName">Table name:
+
           <input
             type="text"
             placeholder="Table Name"
@@ -58,6 +61,269 @@ const ParameterComponent: React.FC = () => {
             onChange={handleTableNameChange}
           />
         </label>
+      </div>
+
+      <div className="parameter-table-container">
+
+        <table className="parameter-table">
+          <thead>
+
+            <tr>
+              <th>Column Name</th>
+              <th>Data Type</th>
+              <th>Extra parameters</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <input/>
+              </td>
+              <td>
+                <select>
+                </select>
+              </td>
+              <td>
+                <select>
+                </select>
+                <input />
+                <input />
+              </td>
+              <td>
+                <button className="delete-row-button"><i className="ri-delete-bin-2-fill align-middle"></i></button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <input />
+              </td>
+              <td>
+                <select  >
+                </select>
+              </td>
+              <td>
+                <select>
+                </select>
+              </td>
+              <td>
+                <button className="delete-row-button"><i className="ri-delete-bin-2-fill align-middle"></i></button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <input />
+              </td>
+              <td>
+                <select  >
+                </select>
+              </td>
+              <td>
+                <select>
+                </select>
+              </td>
+              <td>
+                <button className="delete-row-button"><i className="ri-delete-bin-2-fill align-middle"></i></button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <input />
+              </td>
+              <td>
+                <select  >
+                </select>
+              </td>
+              <td>
+                <select>
+                </select>
+              </td>
+              <td>
+                <button className="delete-row-button"><i className="ri-delete-bin-2-fill align-middle"></i></button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <input />
+              </td>
+              <td>
+                <select  >
+                </select>
+              </td>
+              <td>
+                <select>
+                </select>
+              </td>
+              <td>
+                <button className="delete-row-button"><i className="ri-delete-bin-2-fill align-middle"></i></button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <input />
+              </td>
+              <td>
+                <select  >
+                </select>
+              </td>
+              <td>
+                <select>
+                </select>
+              </td>
+              <td>
+                <button className="delete-row-button"><i className="ri-delete-bin-2-fill align-middle"></i></button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <input />
+              </td>
+              <td>
+                <select  >
+                </select>
+              </td>
+              <td>
+                <select>
+                </select>
+              </td>
+              <td>
+                <button className="delete-row-button"><i className="ri-delete-bin-2-fill align-middle"></i></button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <input />
+              </td>
+              <td>
+                <select  >
+                </select>
+              </td>
+              <td>
+                <select>
+                </select>
+              </td>
+              <td>
+                <button className="delete-row-button"><i className="ri-delete-bin-2-fill align-middle"></i></button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <input />
+              </td>
+              <td>
+                <select  >
+                </select>
+              </td>
+              <td>
+                <select>
+                </select>
+              </td>
+              <td>
+                <button className="delete-row-button"><i className="ri-delete-bin-2-fill align-middle"></i></button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <input />
+              </td>
+              <td>
+                <select  >
+                </select>
+              </td>
+              <td>
+                <select>
+                </select>
+              </td>
+              <td>
+                <button className="delete-row-button"><i className="ri-delete-bin-2-fill align-middle"></i></button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <input />
+              </td>
+              <td>
+                <select  >
+                </select>
+              </td>
+              <td>
+                <select>
+                </select>
+              </td>
+              <td>
+                <button className="delete-row-button"><i className="ri-delete-bin-2-fill align-middle"></i></button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <input />
+              </td>
+              <td>
+                <select  >
+                </select>
+              </td>
+              <td>
+                <select>
+                </select>
+              </td>
+              <td>
+                <button className="delete-row-button"><i className="ri-delete-bin-2-fill align-middle"></i></button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <input />
+              </td>
+              <td>
+                <select  >
+                </select>
+              </td>
+              <td>
+                <select>
+                </select>
+              </td>
+              <td>
+                <button className="delete-row-button"><i className="ri-delete-bin-2-fill align-middle"></i></button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <input />
+              </td>
+              <td>
+                <select  >
+                </select>
+              </td>
+              <td>
+                <select>
+                </select>
+              </td>
+              <td>
+                <button className="delete-row-button"><i className="ri-delete-bin-2-fill align-middle"></i></button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <input />
+              </td>
+              <td>
+                <select  >
+                </select>
+              </td>
+              <td>
+                <select>
+                </select>
+              </td>
+              <td>
+                <button className="delete-row-button"><i className="ri-delete-bin-2-fill align-middle"></i></button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <button className="add-row-button">Add row</button>
+
+
+
       </div>
     </section>
   );

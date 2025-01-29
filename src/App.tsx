@@ -9,7 +9,7 @@ function App() {
   return (
     <div className="App">
       <ParameterComponent  />
-      <TextComponent  /> {/* Pass tableName to TextComponent */}
+      <TextComponent  /> 
     </div>
   );
 }

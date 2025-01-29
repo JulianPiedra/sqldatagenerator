@@ -3,7 +3,9 @@
     z-index: 9999;
     position: absolute;
     top: 10px;
-    right: 0;
+    right: 10px;
+    border-radius: 30px;
+    cursor: grab;
 }
 
 .floating-container {
@@ -11,9 +13,9 @@
     flex-direction: column;
     align-items: center;
     justify-content: start;
-    border-radius: 31px;
     background-color: rgba(0, 0, 0, 0.479);
     position: relative;
+    border-radius: 30px;
 }
 
 .flap {
@@ -21,10 +23,8 @@
     position: absolute;
     width: 90px;
     height: 15px;
-    right: 90px;
-    top: 117px;
-    border-radius: 0 0 50px 50px ;
-    cursor: grab;
+    top: 100%;
+    border-radius: 0 0 50px 50px;
 }
 
 .format-buttons {
@@ -38,12 +38,10 @@
     cursor: pointer;
     border: none;
     width: 25%;
-    height: 45%;
-    padding: 20px;
+    padding: 15px;
     background-color: transparent;
     color: white;
     font-weight: bold;
-    border-radius: 50px;
     z-index: 3;
 }
 
@@ -52,7 +50,7 @@
     border: none;
     padding: 15px;
     width: 90%;
-    margin: 5px 0 10px 0;
+    margin: 10px 0 10px 0;
     color: white;
     font-weight: bold;
     border-radius: 50px;
@@ -63,8 +61,8 @@
     height: 100%;
     width: 25%;
     background-color: rgba(17, 226, 122, 0.479);
-    border-radius: 50px;
-    transition: transform 0.5s ease-in-out;
+    border-top-left-radius: 30px;
+    transition: transform 0.4s ease-in-out, border-radius 0.3s ease-in-out;   
     z-index: 2;
 }
 

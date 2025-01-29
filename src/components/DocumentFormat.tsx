@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import "../css/DocumentFormat.css";
 import { ConvertToFileTypes } from "../utils/ConvertToFileTypes";
 import { useGlobalState } from "../useGlobalState";
@@ -36,32 +36,50 @@ const DocumentFormat: React.FC<Props> = ({ handleChange }) => {
   const handleMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
     setIsDragging(true);
     setDragStart({ x: event.clientX - position.x, y: event.clientY - position.y });
+    event.preventDefault(); // Evita selección de texto
   };
 
-  const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
+  useEffect(() => {
     if (!isDragging) return;
-    const newX = event.clientX - dragStart.x;
-    const newY = event.clientY - dragStart.y;
-    setPosition({ x: newX, y: newY });
-  };
 
-  const handleMouseUp = () => setIsDragging(false);
+    const handleMouseMove = (event: MouseEvent) => {
+      setPosition({
+        x: event.clientX - dragStart.x,
+        y: event.clientY - dragStart.y,
+      });
+    };
+
+    const handleMouseUp = () => {
+      setIsDragging(false);
+    };
+
+    // Agrega eventos al `window` para que funcionen en cualquier parte
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseup", handleMouseUp);
+
+    // Limpia los eventos cuando se suelta el mouse
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, [isDragging, dragStart]);
 
   return (
     <div
       className="draggable-container"
       style={{ transform: `translate(${position.x}px, ${position.y}px)` }}
       onMouseDown={handleMouseDown}
-      onMouseMove={handleMouseMove}
-      onMouseUp={handleMouseUp}
-      onMouseLeave={handleMouseUp}
     >
       <div className="floating-container">
-      <div className="flap"></div>
+        <div className="flap"></div>
 
         <div className="format-buttons">
 
-          <div className="indicator" style={{ transform: `translateX(${buttonValues.indexOf(selected) * 100}%)` }} />
+          <div className="indicator" style={{
+            transform: `translateX(${buttonValues.indexOf(selected) * 100}%)`,
+            borderTopLeftRadius: `${buttonValues.indexOf(selected) === 0 ? 30 : 0}px`,
+            borderTopRightRadius: `${buttonValues.indexOf(selected) === 3 ? 30 : 0}px`
+          }} />
           {buttonValues.map((value) => (
             <button
               className="format-button"

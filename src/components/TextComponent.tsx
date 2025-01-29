@@ -22,7 +22,7 @@ const TextComponent: React.FC = () => {
   return (
     <section className="text-component">
       <DocumentFormat handleChange={setFormat} />
-      <textarea className="text-area" value={limitedContent} readOnly />
+      <textarea className="text-area" value={limitedContent} readOnly  />
     </section>
   );
 };

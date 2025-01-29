@@ -1,38 +1,122 @@
 .parameter-component {
-    width: 40%;
+    width: 50%;
+    overflow: auto; 
+    scrollbar-width:thin;
+    /* For Firefox to hide the scrollbar */
+    -ms-overflow-style: thin;
+    /* For IE/Edge to hide the scrollbar */
+    z-index: 1;
 }
 
 .parameters {
     display: flex;
-    gap: 20px;
     flex-direction: row;
+    gap: 20px;
     width: 100%;
-    padding: 20px;
+    box-sizing: border-box;
+    justify-content: center;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 10px 0;
 }
 
 .parameters label {
     display: flex;
-    font-size: 18px;
     flex-direction: column;
     gap: 10px;
     font-size: 14px;
     color: #ddd;
-    max-width:210px ;
 }
 
 .parameters input {
-    padding: 10px;
-    font-size: 16px;
+    padding: 5px;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 14px;
     border: 1px solid #ddd;
     border-radius: 4px;
-    outline: none;
+}
+
+.parameter-table-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: calc(100% - 30px);
+    min-height: calc(91% - 30px);
+    margin: 15px;
+    padding: 20px;
+    box-sizing: border-box;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    background-color: #18161b;
+}
+
+.parameter-table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.parameter-table input,
+.parameter-table select {
+    margin-bottom: 10px;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 12px;
+    width: 95%;
+    box-sizing: border-box;
+}
+
+.parameter-table input.multiple-parameter,
+.parameter-table select.multiple-parameter {
+    width: 47.5%;
+}
+
+.parameter-table tbody tr {
+    border-top: 1px solid white;
+}
+
+.parameter-table tbody tr:first-child {
+    border-top: none;
+}
+
+.parameter-table tbody tr:last-child {
+    border-bottom: 1px solid #ddd;
+}
+.parameter-table td {
+    min-width: 150px;
+    padding: 15px 0;
+}
+.parameter-table th,
+.parameter-table td {
+    min-width: 150px;
+}
+
+.parameter-table th:last-child,
+.parameter-table td:last-child {
+    min-width: 50px;
+    text-align: center;
+}
+
+.delete-row-button {
+    background-color: transparent;
+    border: none;
+    color: #ff4d4d;
+    font-size: 25px;
+}
+.add-row-button {
+    min-width: 100%;
+    margin: 10px 0;
+    padding: 7px;
+    border: none;
+    border-radius: 5px;
+}
+button,
+select {
+    cursor: pointer;
+}
+input:focus,
+select:focus {
     transition: border-color 0.3s;
-}
-
-.parameters input:focus {
     border-color: #4e90fd;
+    border-radius: 4px;
+    outline: none;
 }
-
-
-

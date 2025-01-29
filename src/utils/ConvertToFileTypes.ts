@@ -10,12 +10,14 @@ export const ConvertToFileTypes = (
     if (tableName === '') tableName = 'table';
 
     if (format === 'sql') {
-      return allData
-        .map(
-          (item) =>
-            `INSERT INTO ${tableName} (id, email, city) VALUES (${item.id}, '${item.email}', '${item.city}')`
-        )
-        .join("\n");
+
+      return `INSERT INTO ${tableName} (id, email, city) VALUES\n` +
+        allData
+          .map((item, index) =>
+            `('${item.id}', '${item.email}', '${item.city}')`
+          )
+          .join(",\n") + ';';
+
     }
 
     if (format === 'json') {
@@ -30,9 +32,9 @@ export const ConvertToFileTypes = (
       return ["id,email,city", ...allData.map((item) => `${item.id},${item.email},${item.city}`)].join("\n");
     }
 
-    return ''; 
+    return '';
   } catch (error) {
     ShowError(String(error));
-    return ''; 
+    return '';
   }
 };
