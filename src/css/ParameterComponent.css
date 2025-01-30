@@ -1,8 +1,8 @@
 .parameter-component {
     width: 50%;
     background-color: #1C1B22;
-    overflow: auto; 
-    scrollbar-width:thin;
+    overflow: auto;
+    scrollbar-width: thin;
     /* For Firefox to hide the scrollbar */
     -ms-overflow-style: thin;
     /* For IE/Edge to hide the scrollbar */
@@ -68,8 +68,10 @@
 
 .parameter-table input.multiple-parameter,
 .parameter-table select.multiple-parameter {
-    width: 47.5%;
+    width: fit-content;
+    margin: auto;
 }
+
 
 .parameter-table tbody tr {
     border-top: 1px solid white;
@@ -82,10 +84,12 @@
 .parameter-table tbody tr:last-child {
     border-bottom: 1px solid #ddd;
 }
+
 .parameter-table td {
     min-width: 150px;
     padding: 15px 0 0 0;
 }
+
 .parameter-table th,
 .parameter-table td {
     color: #ddd;
@@ -98,12 +102,21 @@
     text-align: center;
 }
 
+.parameter-table td label {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 15px;
+    height: 30px;
+}
+
 .delete-row-button {
     background-color: transparent;
     border: none;
     color: #ff4d4d;
     font-size: 25px;
 }
+
 .add-row-button {
     min-width: 100%;
     margin: 10px 0;
@@ -111,10 +124,12 @@
     border: none;
     border-radius: 5px;
 }
+
 button,
 select {
     cursor: pointer;
 }
+
 input:focus,
 select:focus {
     transition: border-color 0.3s;

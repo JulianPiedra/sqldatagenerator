@@ -4,9 +4,10 @@ import { GetIds } from "../services/IdService";
 import { GetEmails } from "../services/EmailService";
 import { GetCities } from "../services/CityService";
 import { QueryConverter } from "../utils/QueryConverter";
+import { extraControls } from "../constants.tsx";
 import "../css/ParameterComponent.css";
 import 'remixicon/fonts/remixicon.css';
-import ModalWithReturn from "./Modal";
+import ModalComponent from "./ModalComponent";
 
 const ParameterComponent: React.FC = () => {
   const [_state, updateState] = useGlobalState();
@@ -14,6 +15,7 @@ const ParameterComponent: React.FC = () => {
   const [selectedValues, setSelectedValues] = useState<Map<number, [number, string]>>(new Map());
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRowIndex, setSelectedRowIndex] = useState<number | null>(null);
+  const [columnValues, setColumnValues] = useState<{ [key: number]: string }>({});
 
   const fetchData = async (records: number) => {
     const query = QueryConverter({ records, length: 4, has_letters: true });
@@ -31,33 +33,61 @@ const ParameterComponent: React.FC = () => {
 
     updateState({ allData: mergedData });
   };
+
   const handleRecordsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const records = Number(event.target.value);
     if (records > 0) fetchData(records);
   };
 
   const handleTableNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const inputValue = event.target.value.trim();
-    updateState({ tableName: inputValue });
+    updateState({ tableName: event.target.value.trim() });
   };
 
-
+  const handleColumnValueChange = (rowId: number, value: string) => {
+    setColumnValues((prevValues) => ({ ...prevValues, [rowId]: value }));
+  };
 
   const handleSelectValue = (value: number, valueMap: string) => {
     if (selectedRowIndex !== null) {
-      setSelectedValues((prevValues) => new Map(prevValues).set(selectedRowIndex, [value, valueMap]));
+      setSelectedValues((prevValues) => {
+        const newValues = new Map(prevValues);
+        newValues.set(selectedRowIndex, [value, valueMap]);
+        return newValues;
+      });
     }
   };
 
-  const handleRowButtonClick = (rowIndex: number) => {
-    setSelectedRowIndex(rowIndex);
+  const handleRowButtonClick = (rowId: number) => {
+    setSelectedRowIndex(rowId);
     setIsModalOpen(true);
   };
-  const deleteRow = () => {
-    setRows((prevRows) => prevRows.slice(0, prevRows.length - 1)); // Eliminar la última fila del estado
-  }
+
+  const deleteRow = (rowId: number) => {
+    setRows((prevRows) => {
+      const newRows = prevRows.filter((id) => id !== rowId);
+
+      const updatedValues = new Map<number, [number, string]>();
+      newRows.forEach((id) => {
+        if (selectedValues.has(id)) {
+          updatedValues.set(id, selectedValues.get(id)!);
+        }
+      });
+
+      setSelectedValues(updatedValues);
+      setColumnValues((prevValues) => {
+        const newColumnValues = { ...prevValues };
+        delete newColumnValues[rowId];
+        return newColumnValues;
+      });
+
+      return newRows;
+    });
+  };
+
   const addRow = () => {
-    setRows((prevRows) => [...prevRows, prevRows.length]); // Agregar una nueva fila al estado
+    const newRowId = Date.now();
+    setRows((prevRows) => [...prevRows, newRowId]);
+    setColumnValues((prevValues) => ({ ...prevValues, [newRowId]: "" }));
   };
 
   return (
@@ -81,7 +111,7 @@ const ParameterComponent: React.FC = () => {
         </label>
       </div>
 
-      <ModalWithReturn
+      <ModalComponent
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onSelect={handleSelectValue}
@@ -98,25 +128,34 @@ const ParameterComponent: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {rows.map((rowIndex) => (
-              <tr key={rowIndex}>
-                <td><input 
-                type="text"
-                required
-                placeholder="Column name..."/></td>
+            {rows.map((rowId) => (
+              <tr key={rowId}>
+                <td><input
+                  type="text"
+                  name="columnName"
+                  required
+                  placeholder="Column name..."
+                  value={columnValues[rowId] || ""}
+                  onChange={(e) => handleColumnValueChange(rowId, e.target.value)}
+                /></td>
                 <td>
                   <input
                     type="button"
-                    onClick={() => handleRowButtonClick(rowIndex)}
-                    value={selectedValues.get(rowIndex)?.[1] || 'Select Value'}
-                    data-value={selectedValues.get(rowIndex)?.[0] || 0}
+                    name="select-value-button"
+                    onClick={() => handleRowButtonClick(rowId)}
+                    value={selectedValues.get(rowId)?.[1] || 'Select Value'}
+                    data-value={selectedValues.get(rowId)?.[0] || 0}
                   />
                 </td>
                 <td>
-                  
+                  {selectedValues.has(rowId) && selectedValues.get(rowId)?.[0] !== 0 ? (
+                    extraControls[Number(selectedValues.get(rowId)?.[0])] || null
+                  ) : null}
                 </td>
                 <td>
-                  <button className="delete-row-button" onClick={deleteRow}><i className="ri-delete-bin-2-fill align-middle"></i></button>
+                  <button className="delete-row-button" onClick={() => deleteRow(rowId)}>
+                    <i className="ri-delete-bin-2-fill align-middle"></i>
+                  </button>
                 </td>
               </tr>
             ))}
@@ -129,5 +168,3 @@ const ParameterComponent: React.FC = () => {
 };
 
 export default ParameterComponent;
-
-
