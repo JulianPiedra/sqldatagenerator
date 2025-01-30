@@ -1,5 +1,6 @@
 .parameter-component {
     width: 50%;
+    background-color: #1C1B22;
     overflow: auto; 
     scrollbar-width:thin;
     /* For Firefox to hide the scrollbar */
@@ -87,6 +88,7 @@
 }
 .parameter-table th,
 .parameter-table td {
+    color: #ddd;
     min-width: 150px;
 }
 

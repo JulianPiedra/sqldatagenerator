@@ -10,26 +10,31 @@ export const ConvertToFileTypes = (
     if (tableName === '') tableName = 'table';
 
     if (format === 'sql') {
+      if (allData.length === 0) return `INSERT INTO ${tableName} VALUES (example, examples) \n ('No data', 'available') ;`;
+      const headers = Object.keys(allData[0]); // Obtener las claves del primer objeto como las cabeceras
+      const rows = allData.map(item =>
+        `(${headers.map(header => `'${item[header]}'`).join(",")})`
+      );
 
-      return `INSERT INTO ${tableName} (id, email, city) VALUES\n` +
-        allData
-          .map((item, _index) =>
-            `('${item.id}', '${item.email}', '${item.city}')`
-          )
-          .join(",\n") + ';';
-
+      return `INSERT INTO ${tableName} (${headers.join(",")})\n` + rows.join(",\n") + ';';
     }
 
     if (format === 'json') {
+      if (allData.length === 0) return JSON.stringify({ message: "No data available" }, null, 2);
       return JSON.stringify(allData, null, 2);
     }
 
     if (format === 'xml') {
+      if (allData.length === 0) return js2xmlparser.parse(tableName, { message: "No data available" });
       return js2xmlparser.parse(tableName, allData);
     }
 
     if (format === 'csv') {
-      return ["id,email,city", ...allData.map((item) => `${item.id},${item.email},${item.city}`)].join("\n");
+      if (allData.length === 0) return 'No,Data,Available';
+      const headers = Object.keys(allData[0]); // Obtener las claves del primer objeto como las cabeceras
+      const rows = allData.map(item => headers.map(header => item[header]).join(",")); // Mapear los valores de cada objeto según las cabeceras
+
+      return [headers.join(","), ...rows].join("\n");
     }
 
     return '';
