@@ -28,6 +28,7 @@ export const ApiFetch = async (url: string) => {
         } else {
             response.json().then((data) => {
             ShowError(String(data.message));
+            return null;
             });
         }
     } catch (error) {

@@ -17,7 +17,6 @@
     width: 100%;
     box-sizing: border-box;
     justify-content: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     padding: 10px 0;
 }
 
@@ -27,6 +26,8 @@
     gap: 10px;
     font-size: 14px;
     color: #ddd;
+    animation: slideInFromLeft 0.7s;
+
 }
 
 .parameters input {
@@ -53,13 +54,13 @@
 }
 
 .parameter-table {
+    animation: slideInFromLeft 0.7s;
     border-collapse: collapse;
     width: 100%;
 }
 
 .parameter-table input,
 .parameter-table select {
-    margin-bottom: 15px;
     padding: 5px;
     border: 1px solid #ddd;
     border-radius: 4px;
@@ -68,15 +69,20 @@
     box-sizing: border-box;
 }
 
-.parameter-table input.multiple-parameter,
-.parameter-table select.multiple-parameter {
-    width: fit-content;
+.parameter-table input.multiple-parameter {
+    width: 90%;
     margin: auto;
+    animation: fadeInScale 0.4s ease-in-out;
+}
+.parameter-table input.multiple-parameter:not(:first-child),
+.parameter-table td label {
+    margin-top: 15px;
 }
 
 
 .parameter-table tbody tr {
     border-top: 1px solid white;
+    animation: slideInFromLeft 0.7s;
 }
 
 .parameter-table tbody tr:first-child {
@@ -88,13 +94,18 @@
 }
 
 .parameter-table td {
-    padding: 15px 0 0 0;
+    padding: 15px 0;
 }
 
 .parameter-table th,
 .parameter-table td {
     color: #ddd;
     min-width: 150px;
+    text-align: center;
+}
+
+.parameter-table td:nth-child(3) {
+    width: 200px;
 }
 
 .parameter-table th:last-child,
@@ -106,9 +117,16 @@
 .parameter-table td label {
     display: flex;
     align-items: center;
+    justify-content: space-evenly;
     width: 100%;
-    margin-bottom: 15px;
     height: 30px;
+    animation: fadeInScale 0.4s ease-in-out;
+    place-items: center;
+}
+
+.parameter-table td label input {
+    margin: 0;
+    width: fit-content;
 }
 
 .delete-row-button {
@@ -124,7 +142,13 @@
     padding: 7px;
     border: none;
     border-radius: 5px;
+    animation: slideInFromDown 0.7s;
 }
+
+.add-row-button:hover {
+    transform: scale(1.05);
+}
+
 
 button,
 select {
@@ -139,20 +163,64 @@ select:focus {
     outline: none;
 }
 
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+
+@keyframes slideInFromRight {
+    0% {
+        transform: translateX(200%);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInFromLeft {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInFromDown {
+    0% {
+        transform: translateY(100%);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+
+
 @media screen and (max-width: 800px) {
     .parameter-component {
         min-width: 100%;
     }
-
 
     .parameter-table input,
     .parameter-table select {
         font-size: 12px;
     }
 
-
     .parameter-table th,
     .parameter-table td {
+        
         color: #ddd;
         font-size: 12px;
         min-width: fit-content;
@@ -163,8 +231,8 @@ select:focus {
         min-width: 35px;
         text-align: center;
     }
+
     .parameter-table td label {
         font-size: 12px;
     }
-
 }

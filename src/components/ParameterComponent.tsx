@@ -5,7 +5,7 @@ import { QueryConverter } from "../utils/QueryConverter";
 import "../css/ParameterComponent.css";
 import 'remixicon/fonts/remixicon.css';
 import ModalComponent from "./ModalComponent";
-import { debounce } from 'lodash';
+import { debounce, forEach } from 'lodash';
 import ShowError from "../utils/ShowError";
 
 
@@ -38,6 +38,7 @@ const ParameterComponent: React.FC = () => {
   const handleTableNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     updateState({ tableName: event.target.value.trim() });
   };
+
   const checkInput = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (!event.key.match(/^[0-9]$/)
       && event.key !== "Backspace") event.preventDefault();
@@ -97,6 +98,11 @@ const ParameterComponent: React.FC = () => {
   );
 
   const handleFetchData = useCallback(async () => {
+    forEach(rows, (value, _key) => {
+      if (selectedValues.has(value)) {
+        return;
+      }
+    });
     // Prevents fetching data if the number of records is invalid
     if (state.records < 0 && Number.isNaN(state.records)) {
       return;
@@ -116,8 +122,10 @@ const ParameterComponent: React.FC = () => {
         const query = `?records=${state.records}&${columnValues[Number(key)]?.query}`;
         return data[selectedKey as keyof typeof data](query as string);
       });
-
       const results = await Promise.all(promises);
+      if (results.includes(undefined)) {
+        results.splice(results.indexOf(undefined), 1);
+      };
       // Removes all empty results
       for (let i = results.length - 1; i >= 0; i--) {
         if (results[i].length === 0) {
@@ -127,14 +135,14 @@ const ParameterComponent: React.FC = () => {
 
       // If there are no results, return
       if (Object.keys(results).length === 0) return;
-      
+
       // Merges the results into a single array 
       const mergedResults = results[0].map((_: any, index: number) => {
         return results.reduce((acc, arr) => {
           Object.entries(arr[index]).forEach(([key, value]) => {
             let newKey = key;
             let counter = 1;
-      
+
             // Ensure unique keys by appending a number if necessary
             while (acc.hasOwnProperty(newKey)) {
               newKey = `${key}_${counter}`;
@@ -143,11 +151,11 @@ const ParameterComponent: React.FC = () => {
 
             acc[newKey] = value;
           });
-      
+
           return acc;
         }, {});
       });
-      
+
       // Updates the global state with the merged results to update in other components
       updateState({ allData: mergedResults });
     } finally {
@@ -168,7 +176,7 @@ const ParameterComponent: React.FC = () => {
         newValues.set(selectedRowIndex, [value, valueMap]);
         return newValues;
       });
-  
+
     }
   };
 
@@ -282,6 +290,7 @@ const ParameterComponent: React.FC = () => {
                             <>
                               {/* Input for the length of the string */}
                               <input
+                                className="multiple-parameter"
                                 type="text"
                                 name="length"
                                 placeholder="Length of the ID"
@@ -289,12 +298,11 @@ const ParameterComponent: React.FC = () => {
                                 onKeyDown={(e) => checkInput(e)}
                               />
                               {/* Checkbox to include letters */}
-                              <label htmlFor="has_letters">
+                              <label htmlFor="has_letters" >
                                 Include letters:
                                 <input
                                   type="checkbox"
                                   name="has_letters"
-                                  className="multiple-parameter"
                                   onChange={(e) => handleInputChange(rowId, e)}
                                 />
                               </label>
@@ -305,6 +313,7 @@ const ParameterComponent: React.FC = () => {
                             <>
                               {/* Input for the minimum and maximum value of the date */}
                               <input
+                                className="multiple-parameter"
                                 type="date"
                                 name="min_date"
                                 placeholder="Minimum value of the date (optional)"
@@ -312,17 +321,17 @@ const ParameterComponent: React.FC = () => {
                               />
                               {/* Input for the maximum value of the date */}
                               <input
+                                className="multiple-parameter"
                                 type="date"
                                 name="max_date"
                                 placeholder="Maximum value of the date (optional)"
                                 onChange={(e) => handleInputChange(rowId, e)}
                               />
                               {/* Checkbox to include time */}
-                              <label htmlFor="includeTime">Include time:
+                              <label htmlFor="includeTime" className="input-animate">Include time:
                                 <input
                                   type="checkbox"
                                   name="include_time"
-                                  className="multiple-parameter"
                                   onChange={(e) => handleInputChange(rowId, e)}
                                 />
                               </label>
@@ -335,6 +344,7 @@ const ParameterComponent: React.FC = () => {
                               <input
                                 type="text"
                                 name="length"
+                                className="multiple-parameter"
                                 placeholder="Length of the telephone (optional)"
                                 onChange={(e) => handleInputChange(rowId, e)}
                                 onKeyDown={(e) => checkInput(e)}
@@ -344,7 +354,6 @@ const ParameterComponent: React.FC = () => {
                                 <input
                                   type="checkbox"
                                   name="include_code"
-                                  className="multiple-parameter"
                                   onChange={(e) => handleInputChange(rowId, e)}
                                 />
                               </label>
@@ -357,6 +366,7 @@ const ParameterComponent: React.FC = () => {
                               <input
                                 type="text"
                                 name="min_value"
+                                className="multiple-parameter"
                                 placeholder="Minimum value of the number"
                                 onChange={(e) => handleInputChange(rowId, e)}
                                 onKeyDown={(e) => checkInput(e)}
@@ -365,6 +375,7 @@ const ParameterComponent: React.FC = () => {
                               <input
                                 type="text"
                                 name="max_value"
+                                className="multiple-parameter"
                                 placeholder="Maximum value of the number"
                                 onChange={(e) => handleInputChange(rowId, e)}
                                 onKeyDown={(e) => checkInput(e)}

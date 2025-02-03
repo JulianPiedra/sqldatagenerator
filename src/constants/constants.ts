@@ -20,7 +20,7 @@ export const valueMap: { [key: number]: { name: string, description: string } } 
     5: { name: 'Country Generation', description: 'Picks a random country around the world. (e.g. Argentina)' },
     6: { name: 'City Generation', description: 'Picks a random city around the world. (e.g. Bogotá)' },
     7: { name: 'Alpha Code Generation', description: 'Picks a random 2 letter code of a country. (e.g. US)' },
-    8: { name: 'Numeric Code Generation', description: 'Picks a random numeric telephone code from a country (e.g +506)' },
+    8: { name: 'Area Code Generation', description: 'Picks a random area telephone code from a country (e.g +506)' },
     9: { name: 'Date Generation', description: 'Picks random dates from a given range or the default set (1950-2060)' },
     10: { name: 'Email Generation', description: 'Generates a random email.' },
     11: { name: 'Telephone Generation', description: 'Generates a random phone number can also include the numeric code. (e.g +506 80808080)' },

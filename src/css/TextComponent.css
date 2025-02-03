@@ -21,3 +21,9 @@
     border: none;
     outline: none;
 }
+@media screen and (max-width: 800px) {
+    .text-component .text-area {
+        font-weight: 700;
+        font-size: 13px;
+    }
+}

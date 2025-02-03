@@ -1,16 +1,17 @@
-// App.tsx
-import TextComponent from './components/TextComponent';
-import ParameterComponent from './components/ParameterComponent';
-import './App.css';
+//import LandingPage from './pages/LandingPage';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import GenerationPage from './pages/GenerationPage.tsx';
 
 function App() {
- 
+
 
   return (
-    <div className="App">
-      <ParameterComponent  />
-      <TextComponent  /> 
-    </div>
+    <BrowserRouter basename='/sqldatagenerator'>
+      <Routes>
+        {/*<Route  index element={<LandingPage />} />*/}
+        <Route index element={<GenerationPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

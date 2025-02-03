@@ -1,11 +1,12 @@
 .draggable-container {
     animation: slideInFromRight 1s;
-    z-index: 9999;
+    z-index: 10;
     position: absolute;
     top: 10px;
     right: 10px;
     border-radius: 30px;
     cursor: grab;
+    width: 255px;
 }
 
 .floating-container {
@@ -32,17 +33,19 @@
     display: flex;
     position: relative;
     width: 100%;
+
 }
 
 .floating-container .format-button {
     cursor: pointer;
     border: none;
     width: 25%;
-    padding: 15px;
+    padding: 15px 0;
     background-color: transparent;
     color: white;
     font-weight: bold;
     z-index: 3;
+    text-align: center;
 }
 
 .download-button {
@@ -73,5 +76,16 @@
 
     100% {
         transform: translateX(0);
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .draggable-container {
+        top: 82%;
+        width: 200px;
+        font-size: 12px;
+    }
+    .floating-container .format-button {
+        padding: 10px 0;
     }
 }
