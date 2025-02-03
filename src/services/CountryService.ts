@@ -1,9 +1,9 @@
 import { ApiFetch } from "./ApiFetch";
-import {API_URL} from '../constants.tsx';
+import {API_URL} from '../constants/constants.ts';
 
 const endpoint = "/country_generation"
 
-export const GetCountries = async (query:string) => {
+export const GetCountries = async (query:string): Promise<any> => {
     const url = `${API_URL}${endpoint}/generate_country${query}`;
     return await ApiFetch(url);
 }

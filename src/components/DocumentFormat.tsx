@@ -8,14 +8,17 @@ interface Props {
 }
 
 const DocumentFormat: React.FC<Props> = ({ handleChange }) => {
-  const [state] = useGlobalState(); // Obtiene el estado global
-  const { tableName, allData } = state;
+  const [state] = useGlobalState(); // Global state to get the data
+
+  // Format outputs
   const [selected, setSelected] = useState("sql");
+  const buttonValues = useMemo(() => ["sql", "json", "xml", "csv"], []);
+
+  // States to handle the dragging of the component
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
 
-  const buttonValues = useMemo(() => ["sql", "json", "xml", "csv"], []);
 
   const handleButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     const format = (event.target as HTMLButtonElement).value;
@@ -24,24 +27,28 @@ const DocumentFormat: React.FC<Props> = ({ handleChange }) => {
   };
 
   const handleDownload = () => {
-    const content = ConvertToFileTypes(tableName, allData, selected);
+    //Conver the entire data to the selected format
+    const content = ConvertToFileTypes({ tableName: state.tableName, allData: state.allData, format: selected });
+    // Create a blob with the content
     const blob = new Blob([content], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `data.${selected}`;
+    // Download the file
+    link.download = `data-output.${selected}`;
     link.click();
   };
 
   const handleMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
-    setIsDragging(true);
-    setDragStart({ x: event.clientX - position.x, y: event.clientY - position.y });
-    event.preventDefault(); // Evita selección de texto
+    setIsDragging(true); // Set the dragging state to true
+    setDragStart({ x: event.clientX - position.x, y: event.clientY - position.y }); // Set the initial position
+    event.preventDefault(); // Prevents the text from being selected
   };
 
   useEffect(() => {
     if (!isDragging) return;
 
+    // Updates the position of the component on mouse down and move
     const handleMouseMove = (event: MouseEvent) => {
       setPosition({
         x: event.clientX - dragStart.x,
@@ -49,15 +56,16 @@ const DocumentFormat: React.FC<Props> = ({ handleChange }) => {
       });
     };
 
+    // Updates the dragging state to false when the mouse is up
     const handleMouseUp = () => {
       setIsDragging(false);
     };
 
-    // Agrega eventos al `window` para que funcionen en cualquier parte
+    // Adds event listeners to the window to handle the dragging 
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mouseup", handleMouseUp);
 
-    // Limpia los eventos cuando se suelta el mouse
+    // Removes the event listeners when the component is unmounted
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseup", handleMouseUp);
@@ -67,6 +75,7 @@ const DocumentFormat: React.FC<Props> = ({ handleChange }) => {
   return (
     <div
       className="draggable-container"
+      // Moves the component through the screen with the x and y from the state
       style={{ transform: `translate(${position.x}px, ${position.y}px)` }}
       onMouseDown={handleMouseDown}
     >
@@ -80,6 +89,7 @@ const DocumentFormat: React.FC<Props> = ({ handleChange }) => {
             borderTopLeftRadius: `${buttonValues.indexOf(selected) === 0 ? 30 : 0}px`,
             borderTopRightRadius: `${buttonValues.indexOf(selected) === 3 ? 30 : 0}px`
           }} />
+          {/* Button grid with the format values*/}
           {buttonValues.map((value) => (
             <button
               className="format-button"

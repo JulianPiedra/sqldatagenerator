@@ -1,5 +1,6 @@
 .text-component {
     width: 100%;
+    min-height: 50vh;
     display: flex;
 }
 

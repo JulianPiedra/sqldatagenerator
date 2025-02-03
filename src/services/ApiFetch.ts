@@ -1,7 +1,10 @@
 import ShowError from "../utils/ShowError";
 
 export const ApiFetch = async (url: string) => {
+    // Get the api key from the environment variables
     const apiKey = import.meta.env.VITE_X_API_KEY;
+
+    //Include the api key in the header
     let header: Record<string, string> = {
         "Content-type": "application/json;charset=UTF-8",
         "Accept": "application/json",
