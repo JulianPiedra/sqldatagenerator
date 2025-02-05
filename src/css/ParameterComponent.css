@@ -13,12 +13,13 @@
 .parameters {
     display: flex;
     flex-direction: row;
-    gap: 20px;
-    width: 100%;
     box-sizing: border-box;
-    justify-content: center;
-    padding: 10px 0;
+    padding: 15px 0;
+    height: 12%;
+    justify-content: space-around;
+    align-items: center;
 }
+
 
 .parameters label {
     display: flex;
@@ -27,7 +28,6 @@
     font-size: 14px;
     color: #ddd;
     animation: slideInFromLeft 0.7s;
-
 }
 
 .parameters input {
@@ -35,8 +35,8 @@
     width: 100%;
     box-sizing: border-box;
     font-size: 14px;
-    border: 1px solid #ddd;
     border-radius: 4px;
+    border: none;
 }
 
 .parameter-table-container {
@@ -44,7 +44,7 @@
     flex-direction: column;
     justify-content: flex-start;
     width: calc(100% - 30px);
-    min-height: calc(91% - 30px);
+    min-height: calc(88% - 30px);
     margin: 15px;
     padding: 20px;
     box-sizing: border-box;
@@ -62,11 +62,11 @@
 .parameter-table input,
 .parameter-table select {
     padding: 5px;
-    border: 1px solid #ddd;
     border-radius: 4px;
-    font-size: 12px;
-    width: 95%;
+    font-size: 14px;
+    width: 90%;
     box-sizing: border-box;
+    border: none;
 }
 
 .parameter-table input.multiple-parameter {
@@ -74,6 +74,7 @@
     margin: auto;
     animation: fadeInScale 0.4s ease-in-out;
 }
+
 .parameter-table input.multiple-parameter:not(:first-child),
 .parameter-table td label {
     margin-top: 15px;
@@ -81,7 +82,7 @@
 
 
 .parameter-table tbody tr {
-    border-top: 1px solid white;
+    border-top: 2px solid white;
     animation: slideInFromLeft 0.7s;
 }
 
@@ -90,27 +91,33 @@
 }
 
 .parameter-table tbody tr:last-child {
-    border-bottom: 1px solid #ddd;
+    border-bottom: 2px solid #ddd;
 }
 
 .parameter-table td {
     padding: 15px 0;
 }
 
+
+.parameter-table th:nth-child(1) {
+    min-width: 172px;
+}
+.parameter-table th:nth-child(2) {
+    min-width: 150px;
+}
+.parameter-table th:nth-child(3) {
+    min-width: 200px;
+}
 .parameter-table th,
 .parameter-table td {
     color: #ddd;
-    min-width: 150px;
+    width: 100%;
     text-align: center;
-}
-
-.parameter-table td:nth-child(3) {
-    width: 200px;
 }
 
 .parameter-table th:last-child,
 .parameter-table td:last-child {
-    min-width: 50px;
+    min-width: fit-content;
     text-align: center;
 }
 
@@ -220,7 +227,7 @@ select:focus {
 
     .parameter-table th,
     .parameter-table td {
-        
+
         color: #ddd;
         font-size: 12px;
         min-width: fit-content;

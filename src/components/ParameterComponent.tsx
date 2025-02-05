@@ -1,12 +1,14 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useGlobalState } from "../useGlobalState";
 import { data } from "../constants/constants";
+import  logo from '../assets/sqldatagenerator.svg';
 import { QueryConverter } from "../utils/QueryConverter";
 import "../css/ParameterComponent.css";
 import 'remixicon/fonts/remixicon.css';
 import ModalComponent from "./ModalComponent";
 import { debounce, forEach } from 'lodash';
 import ShowError from "../utils/ShowError";
+import { Link } from "react-router-dom";
 
 
 const ParameterComponent: React.FC = () => {
@@ -96,6 +98,7 @@ const ParameterComponent: React.FC = () => {
       });
     }, 500), [] //Delays the operation to wait for the user to stop typing
   );
+  
 
   const handleFetchData = useCallback(async () => {
     forEach(rows, (value, _key) => {
@@ -163,11 +166,13 @@ const ParameterComponent: React.FC = () => {
     }
   }, [state.records, selectedValues, columnValues]); //render when values selected in rows or records change
 
+  // Fetches data when the number of records changes
   useEffect(() => {
     if (state.records > 0 && !Number.isNaN(state.records)) {
       handleFetchData();
     }
   }, [state.records, handleFetchData]);
+
 
   const handleSelectValue = (value: number, valueMap: string) => {
     if (selectedRowIndex !== null) {
@@ -216,10 +221,16 @@ const ParameterComponent: React.FC = () => {
       return newRows;
     });
   };
+  useEffect(() => {
+    state.allData = [];
+  }, []);
 
   return (
     <section className="parameter-component">
       <div className="parameters">
+        <Link to="/" className='link'>
+          <img src={logo} alt="logo" className='logo' />
+        </Link>
         {/* Input for the number of records */}
         <label htmlFor="records">Records to generate:
           <input
@@ -247,7 +258,7 @@ const ParameterComponent: React.FC = () => {
             <tr>
               <th>Column Name</th>
               <th>Data Type</th>
-              <th>Extra parameters</th>
+              <th>Customization</th>
               <th>Actions</th>
             </tr>
           </thead>

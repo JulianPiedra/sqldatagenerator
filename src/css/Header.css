@@ -1,0 +1,37 @@
+.header {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+}
+
+.navbar {
+    display: flex;
+    padding: 10px;
+    align-items: center;
+    width: 50%;
+}
+
+
+.links {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+    margin: 0;
+}
+
+.link {
+    text-decoration: none;
+    color: #ddd;
+    margin: 0;
+    text-transform: uppercase;
+    animation: fadeInScale 1.5s ease-in-out;
+}
+
+li:last-child .link {
+    color: #1C1B22;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: #ddd;
+}

@@ -9,18 +9,17 @@
     padding: 10px;
     line-height: 30px;
     font-weight: 800;
-    font-size: 15px;
+    font-size: 18px;
     width: 100%;
     height: 100%;
     overflow: auto;
     scrollbar-width: none;
-    /* For Firefox to hide the scrollbar */
     -ms-overflow-style: none;
-    /* For IE/Edge to hide the scrollbar */
     z-index: 1;
     border: none;
     outline: none;
 }
+
 @media screen and (max-width: 800px) {
     .text-component .text-area {
         font-weight: 700;
