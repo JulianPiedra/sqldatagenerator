@@ -1,17 +1,20 @@
 .header {
     display: flex;
-    width: 100%;
-    justify-content: center;
+    width: 100vw;
+    justify-content: space-around;
     position: fixed;
     top: 0;
-}
-
-.navbar {
+    z-index: 100;
     display: flex;
     padding: 10px;
     align-items: center;
-    width: 50%;
+    transition: background-color 0.5s;
 }
+
+.header.scrolled {
+    background-color: #060a0f;
+}
+
 
 
 .links {

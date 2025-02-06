@@ -3,6 +3,7 @@
     width: 100vw;
     height: 100vh;
     flex-direction: row;
+    overflow: hidden;
 }
 
 @media screen and (max-width: 800px){

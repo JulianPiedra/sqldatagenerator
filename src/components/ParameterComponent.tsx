@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useGlobalState } from "../useGlobalState";
 import { data } from "../constants/constants";
-import  logo from '../assets/sqldatagenerator.svg';
+import logo from '../assets/sqldatagenerator.svg';
 import { QueryConverter } from "../utils/QueryConverter";
 import "../css/ParameterComponent.css";
 import 'remixicon/fonts/remixicon.css';
@@ -36,6 +36,7 @@ const ParameterComponent: React.FC = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const isFetchingRef = useRef(false);
+  const [deletingRow, setDeletingRow] = useState<number | null>(null);
 
   const handleTableNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     updateState({ tableName: event.target.value.trim() });
@@ -98,7 +99,7 @@ const ParameterComponent: React.FC = () => {
       });
     }, 500), [] //Delays the operation to wait for the user to stop typing
   );
-  
+
 
   const handleFetchData = useCallback(async () => {
     forEach(rows, (value, _key) => {
@@ -197,33 +198,22 @@ const ParameterComponent: React.FC = () => {
   };
 
   const deleteRow = (rowId: number) => {
-    setRows((prevRows) => {
-      // Filters the rows to remove only the selected row
-      const newRows = prevRows.filter((id) => id !== rowId);
-
-      // Maps the selected values to remove the selected row
-      const updatedValues = new Map<number, [number, string]>();
-      newRows.forEach((id) => {
-        if (selectedValues.has(id)) {
-          updatedValues.set(id, selectedValues.get(id)!);
-        }
+    setDeletingRow(rowId);
+    setTimeout(() => {
+      setRows((prevRows) => prevRows.filter((id) => id !== rowId));
+      setSelectedValues((prevValues) => {
+        const updatedValues = new Map(prevValues);
+        updatedValues.delete(rowId);
+        return updatedValues;
       });
-
-      setSelectedValues(updatedValues);
-
-      // Removes the row without affecting other rows
       setColumnValues((prevValues) => {
         const newColumnValues = { ...prevValues };
         delete newColumnValues[rowId];
         return newColumnValues;
       });
-
-      return newRows;
-    });
+      setDeletingRow(null);
+    }, 300);
   };
-  useEffect(() => {
-    state.allData = [];
-  }, []);
 
   return (
     <section className="parameter-component">
@@ -264,7 +254,7 @@ const ParameterComponent: React.FC = () => {
           </thead>
           <tbody>
             {rows.map((rowId) => (
-              <tr key={rowId}>
+              <tr key={rowId} className={deletingRow === rowId ? "deleting-row" : ""}>
                 <td>
                   {/* Input for the row column name */}
                   <input

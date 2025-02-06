@@ -50,11 +50,11 @@
     box-sizing: border-box;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     background-color: #18161b;
+    animation: slideInFromLeft 0.5s;
 
 }
 
 .parameter-table {
-    animation: slideInFromLeft 0.7s;
     border-collapse: collapse;
     width: 100%;
 }
@@ -84,6 +84,7 @@
 .parameter-table tbody tr {
     border-top: 2px solid white;
     animation: slideInFromLeft 0.7s;
+    transition: opacity 0.3s ease-out;
 }
 
 .parameter-table tbody tr:first-child {
@@ -149,11 +150,11 @@
     padding: 7px;
     border: none;
     border-radius: 5px;
-    animation: slideInFromDown 0.7s;
+    animation: fadeInScale 2s;
 }
 
 .add-row-button:hover {
-    transform: scale(1.05);
+    transform: scale(1.02);
 }
 
 
@@ -169,49 +170,10 @@ select:focus {
     border-radius: 4px;
     outline: none;
 }
-
-@keyframes fadeInScale {
-    from {
-        opacity: 0;
-        transform: scale(0.9);
-    }
-
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
+.deleting-row {
+    opacity: 0;
 }
 
-
-@keyframes slideInFromRight {
-    0% {
-        transform: translateX(200%);
-    }
-
-    100% {
-        transform: translateX(0);
-    }
-}
-
-@keyframes slideInFromLeft {
-    0% {
-        transform: translateX(-100%);
-    }
-
-    100% {
-        transform: translateX(0);
-    }
-}
-
-@keyframes slideInFromDown {
-    0% {
-        transform: translateY(100%);
-    }
-
-    100% {
-        transform: translateY(0);
-    }
-}
 
 
 

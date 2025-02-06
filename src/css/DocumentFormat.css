@@ -57,6 +57,8 @@
     color: white;
     font-weight: bold;
     border-radius: 50px;
+    animation: fadeInScale 2s;
+
 }
 
 .floating-container .indicator {
@@ -69,15 +71,6 @@
     z-index: 2;
 }
 
-@keyframes slideInFromRight {
-    0% {
-        transform: translateX(100%);
-    }
-
-    100% {
-        transform: translateX(0);
-    }
-}
 
 @media screen and (max-width: 800px) {
     .draggable-container {
