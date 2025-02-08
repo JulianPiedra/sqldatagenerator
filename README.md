@@ -24,8 +24,8 @@ Effortlessly generate customizable test data for your development and testing ne
 
 ## 💡 Example
 
-INSERT INTO users (id, name, email, created_at) VALUES
-(1, 'John Doe', 'john.doe@example.com', '2024-01-01'),
+INSERT INTO users (id, name, email, created_at) VALUES<br>
+(1, 'John Doe', 'john.doe@example.com', '2024-01-01'),<br>
 (2, 'Jane Smith', 'jane.smith@example.com', '2024-01-02');
 
 
@@ -33,12 +33,5 @@ INSERT INTO users (id, name, email, created_at) VALUES
 
 [Visit the Site](https://julianpiedra.github.io/sqldatagenerator/) to start generating your test data effortlessly.
 
-## 🤝 Contributing
-
-Contributions are welcome! Please fork the repository and submit a pull request.
-
-## 📄 License
-
-This project is licensed under the [MIT License](LICENSE).
 
 
