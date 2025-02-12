@@ -18,9 +18,9 @@ Effortlessly generate customizable test data for your development and testing ne
 ## 🛠️ How to Use
 
 1. **Select Data Structure:** Choose or define the fields you need (e.g., names, emails, dates).
-2. **Customize Settings:** Specify data types, formats, and volume.
+2. **Customize Settings:** Specify how many records you need to generate and name of the table.
 3. **Choose Export Format:** Select JSON, CSV, or SQL.
-4. **Generate Data:** Click the generate button and download your data instantly.
+4. **Generate Data:** Once you're done generating, you can just download your data instantly.
 
 ## 💡 Example
 
