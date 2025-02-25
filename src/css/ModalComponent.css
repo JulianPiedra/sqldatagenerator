@@ -12,13 +12,15 @@
 .card-custom {
     cursor: pointer;
     transition: transform 0.2s ease-in-out;
-    background-color: rgba(0, 0, 0, 0.479);
-    color: #ddd;
+    background-color: rgba(0, 0, 0, 0.479);    
 }
-
+.card-text {
+    color: #44424e;
+}
 .card-custom:hover {
     transform: scale(1.05);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    
 }
 
 .card-custom .text-primary {

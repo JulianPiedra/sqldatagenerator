@@ -7,7 +7,7 @@ export default function GetApiKeyComponent() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         const form = e.target as HTMLFormElement;
-        const email = form.elements.namedItem('email') as HTMLInputElement;
+        const email = form.elements[0] as HTMLInputElement;
         const response = await SendEmail(email.value);  // Call the SendEmail service
 
         // Show success or error message based on the response
